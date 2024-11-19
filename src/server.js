@@ -26,6 +26,7 @@ export const startServer = () => {
     const contacts = await getAllContacts();
 
     res.status(200).json({
+      status: 200,
       data: contacts,
       message: 'Successfully found contacts!',
     });
@@ -46,8 +47,9 @@ export const startServer = () => {
 
     // Відповідь, якщо контакт знайдено
     res.status(200).json({
+      status: 200,
+      message: `Successfully found contact with id ${contactId}!`,
       data: contact,
-      message: 'Successfully found contact with id {contactId}!',
     });
   });
 
