@@ -1,5 +1,3 @@
-// src/db/models/student.js
-
 import { model, Schema } from 'mongoose';
 
 const contactsSchema = new Schema(
@@ -23,7 +21,8 @@ const contactsSchema = new Schema(
     contactType: {
       type: String,
       required: true,
-      enum: ['personal', 'home', 'other'],
+      enum: ['personal', 'home', 'work'],
+      default: 'personal',
     },
   },
   {

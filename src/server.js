@@ -27,6 +27,7 @@ export const startServer = () => {
 
     res.status(200).json({
       data: contacts,
+      message: 'Successfully found contacts!',
     });
   });
 
@@ -38,7 +39,7 @@ export const startServer = () => {
     // Відповідь, якщо контакт не знайдено
     if (!contact) {
       res.status(404).json({
-        message: 'Student not found',
+        message: 'Contact not found',
       });
       return;
     }
@@ -46,6 +47,7 @@ export const startServer = () => {
     // Відповідь, якщо контакт знайдено
     res.status(200).json({
       data: contact,
+      message: 'Successfully found contact with id {contactId}!',
     });
   });
 
