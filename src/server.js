@@ -1,15 +1,12 @@
-// src/index.js
-
-// src/server.js
-
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { getAllContacts, getContactById } from './services/contacts.js';
 
 dotenv.config();
 
-const { PORT } = process.env;
+const { PORT = 3000 } = process.env;
 
 export const startServer = () => {
   const app = express();
@@ -17,17 +14,38 @@ export const startServer = () => {
   app.use(express.json());
   app.use(cors());
 
-  // app.use(
-  //   pino({
-  //     transport: {
-  //       target: 'pino-pretty',
-  //     },
-  //   }),
-  // );
+  app.use(
+    pino({
+      transport: {
+        target: 'pino-pretty',
+      },
+    }),
+  );
 
-  app.get('/', (req, res) => {
-    res.json({
-      message: 'Hello world!',
+  app.get('/contacts', async (req, res) => {
+    const contacts = await getAllContacts();
+
+    res.status(200).json({
+      data: contacts,
+    });
+  });
+
+  app.get('/contacts/:contactId', async (req, res, next) => {
+    const { contactId } = req.params;
+    console.log(contactId);
+    const contact = await getContactById(contactId);
+
+    // Відповідь, якщо контакт не знайдено
+    if (!contact) {
+      res.status(404).json({
+        message: 'Student not found',
+      });
+      return;
+    }
+
+    // Відповідь, якщо контакт знайдено
+    res.status(200).json({
+      data: contact,
     });
   });
 
