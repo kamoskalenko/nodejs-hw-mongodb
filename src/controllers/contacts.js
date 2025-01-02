@@ -10,6 +10,8 @@ import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { env } from '../utils/env.js';
 
 export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -60,6 +62,19 @@ export const getContactByIdController = async (req, res, next) => {
 export const createContactController = async (req, res) => {
   const contactData = req.body;
   contactData.userId = req.user._id;
+
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+    contactData.photo = photoUrl;
+  }
   const contact = await createContact(contactData);
 
   res.status(201).json({
@@ -67,19 +82,6 @@ export const createContactController = async (req, res) => {
     message: `Successfully created a contact!`,
     data: contact,
   });
-};
-
-//DELETE
-
-export const deleteContactController = async (req, res, next) => {
-  const { contactId } = req.params;
-
-  const contact = await deleteContact(contactId, req.user._id);
-
-  if (!contact) {
-    throw createHttpError(404, 'Contact not found');
-  }
-  res.status(204).send();
 };
 
 //PATCH
@@ -90,7 +92,11 @@ export const patchContactController = async (req, res, next) => {
   let photoUrl;
 
   if (photo) {
-    photoUrl = await saveFileToUploadDir(photo);
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
   }
 
   const contact = await updateContact(
@@ -110,15 +116,14 @@ export const patchContactController = async (req, res, next) => {
   });
 };
 
-/* в photo лежить обʼєкт файлу
-		{
-		  fieldname: 'photo',
-		  originalname: 'download.jpeg',
-		  encoding: '7bit',
-		  mimetype: 'image/jpeg',
-		  destination: '/Users/borysmeshkov/Projects/goit-study/students-app/temp',
-		  filename: '1710709919677_download.jpeg',
-		  path: '/Users/borysmeshkov/Projects/goit-study/students-app/temp/1710709919677_download.jpeg',
-		  size: 7
-	  }
-	*/
+//DELETE
+export const deleteContactController = async (req, res, next) => {
+  const { contactId } = req.params;
+
+  const contact = await deleteContact(contactId, req.user._id);
+
+  if (!contact) {
+    throw createHttpError(404, 'Contact not found');
+  }
+  res.status(204).send();
+};
