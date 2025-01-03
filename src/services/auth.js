@@ -8,7 +8,6 @@ import createHttpError from 'http-errors';
 import {
   FIFTEEN_MINUTES,
   THIRTY_DAYS,
-  SMTP,
   TEMPLATES_DIR,
 } from '../constants/index.js';
 import { UsersCollection } from '../db/models/user.js';
