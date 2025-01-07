@@ -2,7 +2,7 @@ tags:
   - Contacts
 summary: 'Update a contact by ID.'
 operationId: updateContactById
-description: 'Update an existing contact with the provided data.'
+description: 'Update an existing contact with payload.'
 security:
   - bearerAuth: []
 parameters:
@@ -16,16 +16,11 @@ parameters:
 requestBody:
   required: true
   content:
-    application/json:
+    multipart/form-data:
       schema:
+        type: object
         $ref: '../../../components/schemas/contactUpdate.yaml'
-      example:
-        name: 'Jane Smith'
-        phoneNumber: '+1987654321'
-        email: 'jane.smith@example.com'
-        isFavourite: false
-        contactType: 'personal'
-        photo: 'https://example.com/photos/jane_smith.jpg'
+
 responses:
   '200':
     description: 'Successfully updated contact!'
@@ -45,54 +40,9 @@ responses:
               type: string
               example: 'Successfully updated contact!'
             data:
+              type: object
               $ref: '../../../components/schemas/contact.yaml'
   '404':
-    description: 'Contact not found.'
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - status
-            - message
-            - data
-          properties:
-            status:
-              type: integer
-              example: 404
-            message:
-              type: string
-              example: 'Contact not found.'
-            data:
-              type: object
-              required:
-                - message
-              properties:
-                message:
-                  type: string
-                  example: 'Contact with id 60d21b4667d0d8992e610c85 not found.'
+    $ref: ../../../components/responses/404.yaml
   '401':
-    description: 'Unauthorized error'
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - status
-            - message
-            - data
-          properties:
-            status:
-              type: integer
-              example: 401
-            message:
-              type: string
-              example: 'UnauthorizedError'
-            data:
-              type: object
-              required:
-                - message
-              properties:
-                message:
-                  type: string
-                  example: 'Access token expired'
+    $ref: '../../../components/responses/401.yaml'
