@@ -42,7 +42,6 @@ components:
       $ref: '../swagger/components/responses/401.yaml'
     notFound:
       $ref: '../swagger/components/responses/404.yaml'
-      deleted:
   securitySchemes:
     bearerAuth:
       type: http
