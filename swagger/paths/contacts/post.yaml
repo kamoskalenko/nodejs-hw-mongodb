@@ -1,26 +1,56 @@
 tags:
   - Contacts
-summary: 'Create a new contact.'
+summary: 'Create contact.'
 operationId: createContact
-description: 'Create a new contact with the provided data.'
+description: 'Create contact with payload.'
 security:
   - bearerAuth: []
 requestBody:
   required: true
   content:
-    application/json:
+    multipart/form-data:
       schema:
-        $ref: '../../components/schemas/contact.yaml'
-      example:
-        name: 'Jane Doe'
-        phoneNumber: '+1234567890'
-        email: 'jane.doe@example.com'
-        isFavourite: true
-        contactType: 'work'
-        photo: 'https://res.cloudinary.com/uqwgdu/image/upload/image.png'
+        type: object
+        required:
+          - _id
+          - name
+          - phoneNumber
+          - email
+          - isFavourite
+          - contactType
+          - userId
+          - photo
+        properties:
+          name:
+            description: "Contact's name"
+            type: string
+            example: 'John Doe'
+          phoneNumber:
+            description: "Contact's phone number"
+            type: string
+            example: +1234567890
+          email:
+            description: "Contact's email"
+            type: string
+          isFavourite:
+            description: 'Whether contact is favourite or not'
+            type: boolean
+            example: false
+          contactType:
+            description: 'What kind of relation. Should be 1 of: work / home / personal'
+            type: string
+            enum: ['work', 'home', 'personal']
+          userId:
+            description: "Contact owner's id"
+            type: string
+            example: 65e4decdd286b30065d54af9
+          photo:
+            description: "Link to contact's photo"
+            type: string
+            example: https://res.cloudinary.com/uqwgdu/image/upload/image.png
 responses:
   '201':
-    description: 'Successfully created contact!'
+    description: 'Successfully created a contact!'
     content:
       application/json:
         schema:
@@ -35,56 +65,11 @@ responses:
               example: 201
             message:
               type: string
-              example: 'Successfully created contact!'
+              example: 'Successfully created a contact!'
             data:
+              type: object
               $ref: '../../components/schemas/contact.yaml'
   '404':
-    description: 'Contact not found.'
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - status
-            - message
-            - data
-          properties:
-            status:
-              type: integer
-              example: 404
-            message:
-              type: string
-              example: 'Contact not found.'
-            data:
-              type: object
-              required:
-                - message
-              properties:
-                message:
-                  type: string
-                  example: 'Contact with id 60d21b4667d0d8992e610c85 not found.'
+    $ref: '../../components/responses/404.yaml'
   '401':
-    description: 'Unauthorized error'
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - status
-            - message
-            - data
-          properties:
-            status:
-              type: integer
-              example: 401
-            message:
-              type: string
-              example: 'UnauthorizedError'
-            data:
-              type: object
-              required:
-                - message
-              properties:
-                message:
-                  type: string
-                  example: 'Access token expired'
+    $ref: '../../components/responses/401.yaml'

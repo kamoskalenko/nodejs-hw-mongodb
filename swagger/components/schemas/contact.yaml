@@ -9,10 +9,6 @@ required:
   - userId
   - photo
 properties:
-  _id:
-    description: "Contact's id"
-    type: string
-    example: 65e4decdd286b30065d54af9
   name:
     description: "Contact's name"
     type: string
@@ -40,11 +36,3 @@ properties:
     description: "Link to contact's photo"
     type: string
     example: https://res.cloudinary.com/uqwgdu/image/upload/image.png
-  createdAt:
-    description: 'Created contact at'
-    type: string
-    example: '2025-01-06T12:34:56.789Z'
-  updatedAt:
-    description: 'Updated contact at'
-    type: string
-    example: '2025-01-06T12:34:56.789Z'
