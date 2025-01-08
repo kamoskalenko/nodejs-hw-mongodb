@@ -89,7 +89,7 @@
           },
           {
             "in": "query",
-            "name": "contactType",
+            "name": "type",
             "schema": {
               "type": "string",
               "enum": [
@@ -228,11 +228,6 @@
                       "home",
                       "personal"
                     ]
-                  },
-                  "userId": {
-                    "description": "Contact owner's id",
-                    "type": "string",
-                    "example": "65e4decdd286b30065d54af9"
                   },
                   "photo": {
                     "description": "Link to contact's photo",
@@ -404,6 +399,12 @@
                       "home",
                       "personal"
                     ]
+                  },
+                  "photo": {
+                    "description": "Link to contact's photo",
+                    "type": "string",
+                    "format": "binary",
+                    "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
                   }
                 }
               }
@@ -523,11 +524,6 @@
               "home",
               "personal"
             ]
-          },
-          "userId": {
-            "description": "Contact owner's id",
-            "type": "string",
-            "example": "65e4decdd286b30065d54af9"
           },
           "photo": {
             "description": "Link to contact's photo",
