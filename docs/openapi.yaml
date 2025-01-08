@@ -34,8 +34,6 @@ components:
     # Додайте посилання на ваші схеми тут
     contact:
       $ref: '../swagger/components/schemas/contact.yaml'
-    contactUpdate:
-      $ref: '../swagger/components/schemas/contactUpdate.yaml'
   responses:
     # Додайте посилання на ваші відповіді тут (якщо є загальні відповіді)
     unauthorized:

@@ -19,8 +19,26 @@ requestBody:
     multipart/form-data:
       schema:
         type: object
-        $ref: '../../../components/schemas/contactUpdate.yaml'
-
+        properties:
+          name:
+            description: "Contact's name"
+            type: string
+            example: 'John Doe'
+          phoneNumber:
+            description: "Contact's phone number"
+            type: string
+            example: +1234567890
+          email:
+            description: "Contact's email"
+            type: string
+          isFavourite:
+            description: 'Whether contact is favourite or not'
+            type: boolean
+            example: false
+          contactType:
+            description: 'What kind of relation. Should be 1 of: work / home / personal'
+            type: string
+            enum: ['work', 'home', 'personal']
 responses:
   '200':
     description: 'Successfully updated contact!'
