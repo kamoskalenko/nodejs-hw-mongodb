@@ -63,7 +63,7 @@
             "name": "sortBy",
             "schema": {
               "type": "string",
-              "example": "age"
+              "example": "_id"
             },
             "description": "All contact's fields can be mentioned. Default value - _id"
           },
@@ -85,22 +85,6 @@
             "schema": {
               "type": "boolean",
               "example": false
-            }
-          },
-          {
-            "in": "query",
-            "name": "createdAt",
-            "schema": {
-              "type": "string",
-              "example": 10
-            }
-          },
-          {
-            "in": "query",
-            "name": "updatedAt",
-            "schema": {
-              "type": "string",
-              "example": 16
             }
           },
           {
@@ -211,14 +195,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "_id",
                   "name",
                   "phoneNumber",
                   "email",
-                  "isFavourite",
-                  "contactType",
-                  "userId",
-                  "photo"
+                  "contactType"
                 ],
                 "properties": {
                   "name": {
@@ -257,6 +237,7 @@
                   "photo": {
                     "description": "Link to contact's photo",
                     "type": "string",
+                    "format": "binary",
                     "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
                   }
                 }
@@ -395,7 +376,36 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "$ref": "#/components/schemas/contactUpdate"
+                "properties": {
+                  "name": {
+                    "description": "Contact's name",
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "phoneNumber": {
+                    "description": "Contact's phone number",
+                    "type": "string",
+                    "example": 1234567890
+                  },
+                  "email": {
+                    "description": "Contact's email",
+                    "type": "string"
+                  },
+                  "isFavourite": {
+                    "description": "Whether contact is favourite or not",
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "contactType": {
+                    "description": "What kind of relation. Should be 1 of: work / home / personal",
+                    "type": "string",
+                    "enum": [
+                      "work",
+                      "home",
+                      "personal"
+                    ]
+                  }
+                }
               }
             }
           }
@@ -481,14 +491,9 @@
       "contact": {
         "type": "object",
         "required": [
-          "_id",
           "name",
           "phoneNumber",
-          "email",
-          "isFavourite",
-          "contactType",
-          "userId",
-          "photo"
+          "contactType"
         ],
         "properties": {
           "name": {
@@ -527,57 +532,10 @@
           "photo": {
             "description": "Link to contact's photo",
             "type": "string",
+            "format": "binary",
             "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
           }
         }
-      },
-      "contactUpdate": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Name of the contact",
-            "minLength": 3,
-            "maxLength": 20,
-            "example": "Jane Doe"
-          },
-          "phoneNumber": {
-            "type": "string",
-            "description": "Phone number of the contact",
-            "pattern": "^\\\\+?[0-9]{3,20}$",
-            "example": "+1234567890"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "Email address of the contact",
-            "minLength": 3,
-            "maxLength": 20,
-            "example": "jane.doe@example.com"
-          },
-          "isFavourite": {
-            "type": "boolean",
-            "description": "Indicates if the contact is marked as favourite",
-            "example": true
-          },
-          "contactType": {
-            "type": "string",
-            "description": "Type of the contact",
-            "enum": [
-              "work",
-              "home",
-              "personal"
-            ],
-            "example": "work"
-          },
-          "photo": {
-            "type": "string",
-            "format": "uri",
-            "description": "URL to the contact's photo",
-            "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
-          }
-        },
-        "additionalProperties": false
       }
     },
     "responses": {
